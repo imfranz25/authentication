@@ -1,0 +1,247 @@
+
+  /*--HTML ELEMENTS--*/
+  body{
+    font-family: sans-serif;
+    background-image: url(../images/bg.jpg);
+    background-color: black;
+  }
+  a,#forgot{
+    text-decoration: none;
+    color: deepskyblue;
+  }
+  a:hover{
+    color:cyan;
+  }
+  /*--END--*/
+
+  /*---------------------LOGIN BOX------------------------*/
+  .login_container{
+    margin-top: 8%;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+  }
+  .loginBox{
+    box-sizing: border-box;
+    color: white;
+    box-shadow: 0px 0px 20px 2px cyan;
+    border-radius: 20px 20px;
+    background: rgba(0,0,0,.6);
+    border: cyan 1px solid;
+    width: 380px;
+    padding-bottom: 30px;
+  }
+  #register {
+    margin-top: 2%;
+    text-align:center;
+    padding: 0;
+    color: #fff;
+    font-size: 14px;
+    float: center;
+  }
+  /*--LOGIN BUTTON--*/
+  .loginBox button{
+    color: white;
+    font-size: 17px;
+    background: rgb(20,150,120,.6);
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 7%;
+    margin-left: 12.5%;
+    text-shadow:3px 2px black;
+    border: solid 1px cyan;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 265px;
+    height: 8vh;
+  }
+  /*--LOGIN BUTTON (HOVER)--*/
+  .loginBox button:hover{
+    background: rgb(20,150,120,.5);
+    color: cyan;
+  }
+  /*--LOGIN INPUT BOX--*/
+  .loginBox  input{ 
+    width: 240px;
+    margin-bottom: 10px; 
+    margin-top: 10px;
+    margin-left: 12.5%;
+    background: rgba(130,130,100,0.1);
+    padding: 10px;
+    font-size: 13px;
+    color: #fff;
+    border: 1px solid rgba(0,0,0,0.3);
+    border-radius: 4px;
+    border-bottom: cyan solid 2px;
+    box-shadow: 3px 2px white;
+  }
+  #forgot{
+    margin: 0;
+    float: left;
+    margin-left: 12.5%;
+    font-size: 12px;
+    cursor: pointer;
+  }
+  .label_pointer{
+    font-size: 16px;
+    margin-left: 12.5%;
+    color: white;
+    float: left;
+    cursor: pointer;
+    margin-bottom: -2%;
+    margin-top: 3%;
+  }
+  #forgot:hover,.label_pointer:hover{
+    color: cyan;
+  }
+  #login_label{
+    color: cyan;
+    font-size: 45px;
+    font-weight: bolder;
+    text-decoration:underline solid cyan 5px;
+    text-shadow: 4px 3px maroon;
+    box-shadow: 0px 0px 5px 1px cyan;
+    padding: 30px;
+    background-color: rgb(0,120,120,.8);
+    border-radius: 30px 5px;
+    cursor: pointer;
+    text-align: center;
+  }
+  #login_label:hover{
+    transition: .5s;
+    background-color: rgb(0,120,120,.6);
+    border-radius: 5px 30px;
+  }
+  #login_input{
+    margin-top: 7%;
+  }
+  /*---------------------End of LOGIN BOX------------------------*/
+
+
+
+  /*-----------------Modal Authentication-------------------*/
+   .modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0%;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.8); /* Black w/ opacity */
+  }
+  /* Modal Header */
+  .modal-header {
+    padding: 2px 16px;
+    background-color: rgb(0,120,120,.6);
+    color: skyblue;
+    border:cyan 1px solid;
+  }
+  .modal-header h2{
+    color: cyan;
+    font-weight: bolder;
+    text-decoration:underline solid cyan 5px;
+    text-shadow: 4px 3px maroon;
+    text-align: center;
+    cursor: pointer;
+  }
+  /* Modal Body */
+  .modal-body {
+    padding: 8%;
+    background-color: rgb(0,120,120,.3);
+  }
+  .modal-body label{
+    cursor: pointer;
+    color: white;
+  }
+  .modal-body label:hover{
+    color: cyan;
+  }
+  /* Modal Footer */
+  .modal-footer{
+      background-color: rgb(0,120,120,.6);
+      border:solid 1px cyan;
+      color: white;
+  }
+  
+  /* The Close Button */
+  .close {
+    font-family: comic sans ms;
+    text-shadow: 3px 2px black;
+    color: cyan;
+    float: right;
+    font-size: 35px;
+    font-weight: bold;
+  }
+  .close:hover,
+  .close:focus {
+    color: red;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  /* The Resend Button */
+  .resend {
+    float: left;
+    padding: 10px 13px 8px 13px;
+    margin: 15px 0px 15px 20px;
+  }
+  /*---Submit Button--*/
+  .csub{
+    width: 100px;
+    height: 40px;
+    margin: 15px 0px 15px 100px;
+  }
+  .csub,.resend{
+    text-shadow: 3px 2px black;
+    box-shadow: 3px 2px white;
+    background: rgb(0,0,0,.4);
+    font-size: 16px;
+    font-weight: bolder;
+    color: white;
+    cursor: pointer;
+    border-radius: 20px 5px;
+    border:2px solid skyblue;
+  }
+  .resend:hover,.csub:hover {
+    color: cyan;
+    text-decoration: none;
+    cursor: pointer;
+    border-color:cyan ;
+  }
+  /* Modal Content */
+  .modal-content {
+    position: relative;
+    margin: auto;
+    border: 1px solid gray;
+    box-shadow: 100px red;
+    width: 30%;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.9),0 6px 20px 0 rgba(0,0,0,0.9);
+    animation-name: animatetop;
+    animation-duration: 1.2s;
+    margin-top: 18%;
+    background: rgb(0,0,0.8);
+  }
+  .modal-body input { 
+    width: 230px; 
+    margin-bottom: 10px; 
+    padding: 10px;
+    font-size: 13px;
+    color: white;
+    border: 1px solid rgba(0,0,0,0.3);
+    border-radius: 4px;
+    box-shadow: inset 0 -5px 45px rgba(100,100,100,0.2), 0 1px 1px rgba(255,255,255,0.2);
+    margin-top: 10px;
+    background: rgba(130,130,100,0.1);
+    border-bottom: cyan solid 2px;
+    box-shadow: 3px 2px white;
+  }
+  /* Add Animation */
+  @keyframes animatetop {
+    from {top: -300px; opacity: 0}
+    to {top: 0; opacity: 1}
+  }
+  /*-----------------End of Modal Authentication-------------------*/
+     
+
