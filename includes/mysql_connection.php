@@ -15,4 +15,9 @@
 
     }// End
 
+    // Close Connection
+    function close_connection($con){
+        $con -> close();
+    }
+
 ?>
