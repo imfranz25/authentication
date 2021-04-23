@@ -1,41 +1,126 @@
 
-<!--JS Source-->
+<!--JS SOURCE-->
 <script src="../js/login.js"></script>
 
 <?php
-	// start session;
+
+	// IMPORT SQL CONNECTION
+	require_once '../includes/mysql_connection.php';
+	// START SESSION
 	session_start();
 
-	// Import MySQl Connection
-	require_once '../includes/mysql_connection.php';
+	//CREATE CODE
+	function create_code(){
+		return rand(000000,999999);
+	}//END CREATE CODE FUNCTION
 
+	//INSERT CODE
+	function insert_code($con,$user,$code){
+		$query = "INSERT INTO `code`(`account_user`, `code_num`,`code_expiration`) VALUES ('".$user."','".$code."', (NOW() + INTERVAL 5 MINUTE) );";
+		return mysqli_query($con,$query);
+	}//END INSERT CODE FUNCTION
+
+	//RECORD EVENT
+	function record_event($con,$user,$action){
+		$query = "INSERT INTO `event_log`(`account_user`, `event_action`) VALUES ('".$user."','".$action."');";
+		return mysqli_query($con,$query);
+	}//END RECORD EVENT FUNCTION
+
+	// ISSET SUBMIT LOGIN
 	if(isset($_POST['submit'])){
-
 		if($_POST['submit'] == 'true'){
 
-			// Initialization
+			// INITIALIZATION
 			$connection = mysql_connect(); // call mysql connect function
 			$username = $_POST['user'];
 			$password = $_POST['pass'];
-			$query = 'SELECT * FROM `account` WHERE `account_user` = "'.$username.'" AND `account_pass` = "'.$password.'" ';
+			$query = 'SELECT * FROM `account` WHERE `account_user` = "'.$username.'" AND `account_pass` = "'.$password.'"; ';
 			$result = mysqli_query($connection,$query);
 			$count = mysqli_num_rows($result);
 
-			// condition
+			// CONDITION (IF USER PASS EXIST)
 			if ($count == 1) {
-				$_SESSION['modal'] = 'true';
-				header('location: login.php'); //proceed to login (with modal)
+				$_SESSION['code'] = create_code(); 
+				$_SESSION['username'] = $username; 
+				$_SESSION['modal_msg'] = 'true'; 
+				$_SESSION['logged-in'] = 'true'; 
+				insert_code($connection,$_SESSION['username'],$_SESSION['code']);
+				record_event($connection,$_SESSION['username'],'Log-in');
 			}
 			else{
-				header('location: login.php'); //proceed to login (login failed)
+				$_SESSION['failed'] = 'true';
+				$_SESSION['logged-in'] = 'false'; //set false 
 			}
 			close_connection($connection); //close connection
+			header('location: login.php'); //redirect to login page
+		}
+		 // go back to login pages
+	}// end of isset submit login
+
+	// isset submit for authentication
+	if(isset($_POST['submit_otp'])){
+
+		// Initialization
+		$connection = mysql_connect(); // call mysql connect function
+		$code_input = $_POST['ver'];
+		$latest_user_id = 0;
+		$query = 'SELECT * FROM `code` WHERE `account_user` = "'.$_SESSION['username'].'" AND `code_expiration` > NOW() ;';
+		$result = mysqli_query($connection,$query);
+		$count = mysqli_num_rows($result);
+
+		// CHECK IF QUERY EXIST
+		if ($count > 0 ) {
+			while ($row = mysqli_fetch_assoc($result)) {
+				
+				// GET LATEST ID TO IDENTIFY LATEST CODE
+				if($row['code_id'] >= $latest_user_id){
+					$latest_user_id = $row['code_id'];	
+				}	
+				$count = $count - 1; // DECREMENT ROW COUNT
+				// COMPARE CODE INPUT TO LATEST CODE
+				if ($count == 0){
+					if ($row['code_num'] == $code_input) {
+						$_SESSION['authenticated'] = 'true'; 
+						record_event($connection,$_SESSION['username'],'Logged-in');
+					}
+					else{
+						$_SESSION['authentication_failed'] = 'true';
+					}	
+				}	
+			}
 		}
 		else{
-			header('location: login.php'); // submission inputs invalid
+			session_destroy(); // DESTROY SESSION (CLEAR VARIABLES)
 		}
-		
-	}// end of isset submit
+		close_connection($connection); // CLOSE CONNECTION	
+		header('location: login.php'); // REDIRECT TO LOGIN PAGE
+	}// END OF ISSET AUTHENTICATION SUBMIT
+
+	// ISSET SUBMIT RESEND
+	if(isset($_POST['resend'])){
+		$connection = mysql_connect();
+		$_SESSION['code'] = create_code();
+		$_SESSION['modal_msg'] = 'true';
+		$_SESSION['logged-in'] = 'true';
+		insert_code($connection,$_SESSION['username'],$_SESSION['code']);
+		record_event($connection,$_SESSION['username'],'Resend Code');
+		header('location: login.php'); 
+	}// END ISSET SUBMIT RESEND
+
+	// ISSET SUBMIT (OK) - MESSAGE DIAGLOG
+	if(isset($_POST['ok'])){
+		if (isset($_SESSION['logged-in'])) {
+			if ($_SESSION['logged-in'] == 'true') {
+				$_SESSION['code'] = create_code();
+				$_SESSION['modal'] = 'true';
+				$_SESSION['logged-in'] = 'false';
+			}
+		}
+		header('location: ../index.php'); // SET DEFAULT LOCATION INDEX PHP
+	}// END ISSET SUBMIT (OK) - MESSAGE DIAGLOG
+
+
+
 
 
 ?>

@@ -1,17 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Log-in</title>
 
+	<!--Title-->
+	<title>Log-in</title>
 	<!--CSS Source-->
 	<link rel="stylesheet" type="text/css" href="../styles/accs.css">
 	<!--JQuery Library-->
 	<script src="../js/jquery.js"></script>
 	<!--JS Source-->
-	<script src="../js/acc.js"></script>
+	<script src="../js/account.js"></script>
 	
-
-
 </head>
 <body>
 
@@ -53,25 +52,69 @@
 			  	</table>
 			  </div>
 			  <div class="modal-footer">
-			  	<button class="resend" id="resend" name="send">Resend Code</button>
-			    <button name="otpsub" id="otpsub" class="csub" >Submit</button>
+			  	<button class="resend" name="resend">Resend Code</button>
+			    <button class="csub" name="submit_otp">Submit</button>
 		 	  </div>
 		  </form>
 		</div>
 	</div>
 	<!-----------End of Modal Authentication Code-------------->
 
-	
+	<!-----------Modal Message-------------->
+	<div id="modal_message" class="modal_message">
+		<div class="modal_message_content">
+		  	<div class="modal_message_header">
+		    	<h2>*Message Dialog*</h2>
+		  	</div>
+			 <div class="modal_message_body">
+			  	<center><label id="msg"></label></center>
+			 </div>
+			<div class="modal_message_footer">
+				<form action="../accounts/verify.php" method="post">
+			  	<center><button class="ok" id="ok" name="ok">Ok</button></center>
+			  	</form>
+		 	 </div>
+		</div>
+	</div>
+	<!-----------End of Modal Authentication Code-------------->
+
+
+
+
+
+
+<!----------------------------PHP CODES STARTS HERE------------------------------>
 <?php 
-session_start(); 
-if (isset($_SESSION['modal']) && $_SESSION['modal'] == 'true' ){ 
+session_start();
+// IF AUTHENTICATED (LOGIN - AUTHENTICATION SUCCESS) - SHOW SUCCESS
+if (isset($_SESSION['authenticated']) && $_SESSION['authenticated'] == 'true') {
+	echo '<script>show_message("Log-in Success","block");</script>'; 
+	$_SESSION['authenticated'] = 'false';
+}
+// IF FAILED (LOGIN-SUCCESS BUT AUTHENTICATION-FAILED) - SHOW FAILED
+else if(isset($_SESSION['authentication_failed']) && $_SESSION['authentication_failed'] == 'true' ){
+	echo '<script>show_message("Authentication Error","block");</script>'; 
+	$_SESSION['authentication_failed'] = 'false';
+}
+// IF LOG-IN FAILED - SHOW USER DOES NOT EXIST
+else if (isset($_SESSION['failed']) && $_SESSION['failed'] == 'true') {
+	echo '<script>show_message("User Does Not Exist","block");</script>'; 
+	$_SESSION['failed'] = 'false';
+}
+// IF LOG-IN SUCCESS (SHOW AUTHENTICATION CODE)
+else if ((isset($_SESSION['code']) && isset($_SESSION['modal_msg'])) && $_SESSION['modal_msg'] == 'true'){
+	echo '<script>show_message("Code : '.$_SESSION['code'].'","block");</script>'; 
+	$_SESSION['modal_msg'] = 'false';
+} 
+// IF AUTHENTICATION CODE SHOWN (SHOW MODAL AUTHENTICATION INPUT NEXT)
+else if (isset($_SESSION['modal']) && $_SESSION['modal'] == 'true' ){ 
 	echo '<script>show_modal("block");</script>'; 
 	$_SESSION['modal'] = 'false';
 }
-else{
-	echo '<script>show_modal("none");</script>'; 
-}
+//ELSE PROCEED TO LOGIN PAGE HTML
 ?>
+<!----------------------------PHP CODES ENDS HERE------------------------------>
+
 
 </body>  
 </html>
