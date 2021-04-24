@@ -15,13 +15,13 @@
   /*--END--*/
 
   /*---------------------LOGIN BOX------------------------*/
-  .login_container{
+  .login_container,.register_container{
     margin-top: 8%;
     padding: 0;
     display: flex;
     justify-content: center;
   }
-  .loginBox{
+  .loginBox,.register_box{
     box-sizing: border-box;
     color: white;
     box-shadow: 0px 0px 20px 2px cyan;
@@ -40,7 +40,7 @@
     float: center;
   }
   /*--LOGIN BUTTON--*/
-  .loginBox button{
+  .loginBox button,.register_box button{
     color: white;
     font-size: 17px;
     background: rgb(20,150,120,.6);
@@ -56,12 +56,12 @@
     height: 8vh;
   }
   /*--LOGIN BUTTON (HOVER)--*/
-  .loginBox button:hover{
+  .loginBox button:hover,.register_box button:hover{
     background: rgb(20,150,120,.5);
     color: cyan;
   }
   /*--LOGIN INPUT BOX--*/
-  .loginBox  input{ 
+  .loginBox  input,.register_box input{ 
     width: 240px;
     margin-bottom: 10px; 
     margin-top: 10px;
@@ -112,7 +112,7 @@
     background-color: rgb(0,120,120,.6);
     border-radius: 5px 30px;
   }
-  #login_input{
+  #login_input,#register_input{
     margin-top: 7%;
   }
   /*---------------------End of LOGIN BOX------------------------*/

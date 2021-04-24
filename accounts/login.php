@@ -5,11 +5,11 @@
 	<!--Title-->
 	<title>Log-in</title>
 	<!--CSS Source-->
-	<link rel="stylesheet" type="text/css" href="../styles/accs.css">
+	<link rel="stylesheet" type="text/css" href="../styles/account.css">
 	<!--JQuery Library-->
 	<script src="../js/jquery.js"></script>
 	<!--JS Source-->
-	<script src="../js/account.js"></script>
+	<script src="../js/account_action.js"></script>
 	
 </head>
 <body>
@@ -17,7 +17,7 @@
 	<!-----------Login Box-------------->
 	<div class="login_container">
 	<fieldset class="loginBox">
-		<legend id="login_label" >Login</legend>
+		<legend id="login_label" >SyraTech</legend>
 			<!-----------Form-------------->
 	        <form action="../accounts/verify.php" method="post">
 			        <div id="login_input">
@@ -27,8 +27,8 @@
 				    	<input type="password" name="pass" id="pass" placeholder="Enter your password" required>
 			        </div>
 				    <p id="forgot">Forgot Password ? </p>
-				    <button id="submit" name="submit" value="true" >Sign in</button>
-				    <p id="register">Don't have an account ? <a href="#">Sign up Here</a></p>
+				    <button id="submit_login" name="submit_login" value="true" >Log in</button>
+				    <p id="register">Don't have an account ? <a href="register.php">Register Here</a></p>
 	        </form>
 	        <!-----------End of Form-------------->   
 	</fieldset>

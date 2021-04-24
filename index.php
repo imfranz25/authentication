@@ -6,12 +6,9 @@
 	<title>My Website | Francis Ong</title>
 	<!--PHP Imports-->
 	<?php 
-		//REQUIRE AUTHENTICATION
-		require 'accounts/authentication.php'; 
-		//IMPORT MYSQL CONNECTION
-		require_once 'includes/mysql_connection.php';
-		//IMPORT VERIFY PHP
-		include 'accounts/verify.php'; 
+	require 'accounts/authentication.php'; 
+	include 'includes/mysql_connection.php';
+	include 'accounts/event_log.php'; 
 	?>
 
 </head>
@@ -19,8 +16,7 @@
 
 	<!---------------------------PHP CODES STARTS HERE---------------------->
 	<?php if (isset($_POST['logout'])) {
-		$connection = mysql_connect();
-		record_event($connection,$_SESSION['username'],'Log-out');
+		record_event(mysql_connect(),$_SESSION['username'],'Log-out');
 		session_destroy(); //END SESSION (CLEAR VARIABLES)
 		header('location: index.php'); // RELOAD INDEX PHP
 	}?>

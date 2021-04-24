@@ -4,8 +4,9 @@
 
 <?php
 
-	// IMPORT SQL CONNECTION
+	// IMPORTS
 	require_once '../includes/mysql_connection.php';
+	include 'event_log.php';
 	// START SESSION
 	session_start();
 
@@ -20,47 +21,46 @@
 		return mysqli_query($con,$query);
 	}//END INSERT CODE FUNCTION
 
-	//RECORD EVENT
-	function record_event($con,$user,$action){
-		$query = "INSERT INTO `event_log`(`account_user`, `event_action`) VALUES ('".$user."','".$action."');";
-		return mysqli_query($con,$query);
-	}//END RECORD EVENT FUNCTION
+	//	VERIFY USER-PASS
+	function verify_user_pass($con,$user,$pass){
+		$query = 'SELECT * FROM `account` WHERE `account_user` = "'.$user.'" AND `account_pass` = "'.$pass.'"; ';
+		$result = mysqli_query($con,$query);
+		return mysqli_num_rows($result);
+	}//END VERIFY USER PASS
+
+	// VERIFY AUTHENTICATION CODE
+	function verify_code($user,$code){
+
+	}//END VERIFY CODE
 
 	// ISSET SUBMIT LOGIN
-	if(isset($_POST['submit'])){
-		if($_POST['submit'] == 'true'){
-
+	if(isset($_POST['submit_login'])){
+		if($_POST['submit_login'] == 'true'){
 			// INITIALIZATION
 			$connection = mysql_connect(); // call mysql connect function
-			$username = $_POST['user'];
-			$password = $_POST['pass'];
-			$query = 'SELECT * FROM `account` WHERE `account_user` = "'.$username.'" AND `account_pass` = "'.$password.'"; ';
-			$result = mysqli_query($connection,$query);
-			$count = mysqli_num_rows($result);
-
+			$user = $_POST['user'];
+			$pass = $_POST['pass'];
 			// CONDITION (IF USER PASS EXIST)
-			if ($count == 1) {
+			if ((int)verify_user_pass($connection,$user,$pass) == 1) {
 				$_SESSION['code'] = create_code(); 
-				$_SESSION['username'] = $username; 
+				$_SESSION['username'] = $user; 
 				$_SESSION['modal_msg'] = 'true'; 
 				$_SESSION['logged-in'] = 'true'; 
 				insert_code($connection,$_SESSION['username'],$_SESSION['code']);
-				record_event($connection,$_SESSION['username'],'Log-in');
+				//record_event($connection,$_SESSION['username'],'Log-in');
 			}
 			else{
 				$_SESSION['failed'] = 'true';
 				$_SESSION['logged-in'] = 'false'; //set false 
-			}
-			close_connection($connection); //close connection
-			header('location: login.php'); //redirect to login page
+			}	
 		}
-		 // go back to login pages
-	}// end of isset submit login
+		close_connection($connection); //close connection
+		header('location: login.php'); //redirect to login page
+	}//END SUBMIT LOGIN
 
-	// isset submit for authentication
+	// ISSET SUBMIT ATUTHENTICATION
 	if(isset($_POST['submit_otp'])){
-
-		// Initialization
+		// INIALIZATION
 		$connection = mysql_connect(); // call mysql connect function
 		$code_input = $_POST['ver'];
 		$latest_user_id = 0;
@@ -104,6 +104,7 @@
 		$_SESSION['logged-in'] = 'true';
 		insert_code($connection,$_SESSION['username'],$_SESSION['code']);
 		record_event($connection,$_SESSION['username'],'Resend Code');
+		close_connection($connection); // CLOSE CONNECTION
 		header('location: login.php'); 
 	}// END ISSET SUBMIT RESEND
 
