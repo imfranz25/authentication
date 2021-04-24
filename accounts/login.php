@@ -5,11 +5,13 @@
 	<!--Title-->
 	<title>Log-in</title>
 	<!--CSS Source-->
-	<link rel="stylesheet" type="text/css" href="../styles/account.css">
+	<link rel="stylesheet" type="text/css" href="../styles/account_style.css">
 	<!--JQuery Library-->
 	<script src="../js/jquery.js"></script>
 	<!--JS Source-->
-	<script src="../js/account_action.js"></script>
+	<script src="../js/account.js"></script>
+	<!--Start PHP Session-->
+	<?php session_start(); ?>
 	
 </head>
 <body>
@@ -42,7 +44,7 @@
 		    <span class="close">&times;</span>
 		    <h2>*Authentication*</h2>
 		  </div>
-		  <form action="../accounts/verify.php" method="post">
+		  <form action="verify.php" method="post">
 			  <div class="modal-body">
 			  	<table>
 			  		<tr>
@@ -70,22 +72,40 @@
 			  	<center><label id="msg"></label></center>
 			 </div>
 			<div class="modal_message_footer">
-				<form action="../accounts/verify.php" method="post">
-			  	<center><button class="ok" id="ok" name="ok">Ok</button></center>
+				<form action="verify.php" method="post">
+			  	<center><button class="ok" id="ok" name="ok_login">Ok</button></center>
 			  	</form>
 		 	 </div>
 		</div>
 	</div>
 	<!-----------End of Modal Authentication Code-------------->
 
+	<!-----------Modal Message-------------->
+	<div id="modal_message_forgot" class="modal_message">
+		<div class="modal_message_content" id="modal_message_content_forgot">
+		  	<div class="modal_message_header">
+		    	<h2>*Forgot Password*</h2>
+		  	</div>
+		  	<!-----------Form-------------->
+		  	<form action="forgot_pass.php" method="post">
+				<div class="modal-body-forgot" id="forgot_dialog_content">
+					<!-----------Dynamic Content-------------->		
+				</div>
+				<div class="modal_message_footer">
+				  	<button class="resend" id="cancel">Cancel</button>
+				    <button class="csub" name="submit_forgot">Submit</button>
+		 	 	</div>
+		 	</form>
+			<!-----------End of Form-------------->
+		</div>
+	</div>
+	<!-----------End of Modal Authentication Code-------------->
 
-
-
+	
 
 
 <!----------------------------PHP CODES STARTS HERE------------------------------>
 <?php 
-session_start();
 // IF AUTHENTICATED (LOGIN - AUTHENTICATION SUCCESS) - SHOW SUCCESS
 if (isset($_SESSION['authenticated']) && $_SESSION['authenticated'] == 'true') {
 	echo '<script>show_message("Log-in Success","block");</script>'; 
@@ -103,13 +123,18 @@ else if (isset($_SESSION['failed']) && $_SESSION['failed'] == 'true') {
 }
 // IF LOG-IN SUCCESS (SHOW AUTHENTICATION CODE)
 else if ((isset($_SESSION['code']) && isset($_SESSION['modal_msg'])) && $_SESSION['modal_msg'] == 'true'){
-	echo '<script>show_message("Code : '.$_SESSION['code'].'","block");</script>'; 
+	echo '<script>show_message("Code : '.$_SESSION['code'].'","block");</script>';
 	$_SESSION['modal_msg'] = 'false';
 } 
 // IF AUTHENTICATION CODE SHOWN (SHOW MODAL AUTHENTICATION INPUT NEXT)
 else if (isset($_SESSION['modal']) && $_SESSION['modal'] == 'true' ){ 
 	echo '<script>show_modal("block");</script>'; 
 	$_SESSION['modal'] = 'false';
+}
+// IF VALID USER & EMAIL (SHOW UPDATE PASSWORD MODAL)
+else if (isset($_SESSION['update_modal']) && $_SESSION['update_modal'] == 'true'){
+	echo '<script>show_forgot("New Password","Confirm Password")</script>'; 
+	$_SESSION['update_modal'] = 'false';
 }
 //ELSE PROCEED TO LOGIN PAGE HTML
 ?>

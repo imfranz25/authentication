@@ -2,7 +2,8 @@
 
 	// IMPORTS
 	require_once '../includes/mysql_connection.php';
-
+	// START SESSION
+	session_start();
 
 	// ADD ACCOUNT (SEND TO DATABASE)
 	function add_account($con,$user,$pass,$email){
@@ -16,10 +17,16 @@
 			//INITIALIZATION
 			$con = mysql_connect();
 			$user = $_POST['user'];
-			$pass = $_POST['pass'];
+			$pass = password_hash($_POST['pass'],PASSWORD_DEFAULT);
 			$email = $_POST['email'];
 			if (add_account($con,$user,$pass,$email)){
-				header('location: login.php');
+				$_SESSION['hide'] = 'true';
+				$_SESSION['success'] = 'true';
+				header('location: register.php');
+			}
+			else{
+				$_SESSION['error'] = 'true';
+				header('location: register.php');
 			}
 			close_connection($con); // close connection
 		}
@@ -28,6 +35,14 @@
 		}
 		
 	}
+
+	// ISSET SUBMIT (OK) - MESSAGE DIAGLOG
+	if(isset($_POST['ok'])){
+		if (isset($_SESSION['hide']) && $_SESSION['hide'] == 'true'){
+			session_destroy(); // DESTROY SESSION (CLEAR VARIABLES)
+			header('location: ../index.php');
+		}
+	}// END ISSET SUBMIT (OK) - MESSAGE DIAGLOG
 
 
 

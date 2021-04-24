@@ -1,7 +1,3 @@
-
-<!--JS SOURCE-->
-<script src="../js/login.js"></script>
-
 <?php
 
 	// IMPORTS
@@ -23,9 +19,13 @@
 
 	//	VERIFY USER-PASS
 	function verify_user_pass($con,$user,$pass){
-		$query = 'SELECT * FROM `account` WHERE `account_user` = "'.$user.'" AND `account_pass` = "'.$pass.'"; ';
+		$query = 'SELECT * FROM `account` WHERE `account_user` = "'.$user.'"; ';
 		$result = mysqli_query($con,$query);
-		return mysqli_num_rows($result);
+		if(mysqli_num_rows($result) == 1){
+			while ($row = mysqli_fetch_assoc($result)) {
+				return password_verify($pass,$row['account_pass']); // VERIFY PASS
+			}
+		}else{return false;}  
 	}//END VERIFY USER PASS
 
 	// VERIFY AUTHENTICATION CODE
@@ -41,13 +41,13 @@
 			$user = $_POST['user'];
 			$pass = $_POST['pass'];
 			// CONDITION (IF USER PASS EXIST)
-			if ((int)verify_user_pass($connection,$user,$pass) == 1) {
+			if (verify_user_pass($connection,$user,$pass)) {
 				$_SESSION['code'] = create_code(); 
 				$_SESSION['username'] = $user; 
 				$_SESSION['modal_msg'] = 'true'; 
 				$_SESSION['logged-in'] = 'true'; 
 				insert_code($connection,$_SESSION['username'],$_SESSION['code']);
-				//record_event($connection,$_SESSION['username'],'Log-in');
+				record_event($connection,$_SESSION['username'],'Log-in');
 			}
 			else{
 				$_SESSION['failed'] = 'true';
@@ -109,7 +109,7 @@
 	}// END ISSET SUBMIT RESEND
 
 	// ISSET SUBMIT (OK) - MESSAGE DIAGLOG
-	if(isset($_POST['ok'])){
+	if(isset($_POST['ok_login'])){
 		if (isset($_SESSION['logged-in'])) {
 			if ($_SESSION['logged-in'] == 'true') {
 				$_SESSION['code'] = create_code();

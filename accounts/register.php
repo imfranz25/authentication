@@ -6,11 +6,13 @@
   <!--Title-->
   <title>Register</title>
   <!--CSS Source-->
-  <link rel="stylesheet" type="text/css" href="../styles/account.css">
+  <link rel="stylesheet" type="text/css" href="../styles/account_style.css">
   <!--JQuery Library-->
   <script src="../js/jquery.js"></script>
   <!--JS Source-->
-  <script src="../js/account_action.js"></script>
+  <script src="../js/account.js"></script>
+  <!--Start PHP Session-->
+  <?php session_start(); ?>
 
 </head>
 <body>
@@ -29,13 +31,48 @@
                 <input type="password" name="cpass" id="cpass" placeholder="Enter confirm password" required>
                 <label class="label_pointer" for="email">Email</label>
                 <input type="text" name ="email" id="email" placeholder="Enter email" required>
-                <button name="submit_register" id="submit_register" onclick="validate_input()"  >Register</button>
+                <button name="submit_register" id="submit_register" value="true" onclick="validate_input()"  >Register</button>
                 <p id="register">Already have an Account ? <a href="login.php">Log in Here</a></p>
           </form>
           <!-----------End of Form-------------->   
   </fieldset>
   </div>
-  <!-----------End of Login Box-------------->
+  <!-----------End of Register Box-------------->
+
+
+  <!-----------Modal Message-------------->
+  <div id="modal_message" class="modal_message">
+    <div class="modal_message_content">
+        <div class="modal_message_header">
+          <h2>*Message Dialog*</h2>
+        </div>
+       <div class="modal_message_body">
+          <center><label id="msg"></label></center>
+       </div>
+      <div class="modal_message_footer">
+        <form action="add_account.php" method="post">
+          <center><button class="ok" id="ok" name="ok">Ok</button></center>
+          </form>
+       </div>
+    </div>
+  </div>
+  <!-----------End of Modal Authentication Code-------------->
+
+  <!----------------------------PHP CODES STARTS HERE--------------------------->
+  <?php
+  // DISPLAY SUCCESS MSG
+  if (isset($_SESSION['success']) && $_SESSION['success'] == 'true') {
+    echo '<script>show_message("Account Created Successfully","block");</script>'; 
+    $_SESSION['success'] = 'false';
+  }
+  // DISPLAY ERROR MSG
+  else if (isset($_SESSION['error']) && $_SESSION['error'] == 'true') {
+    echo '<script>show_message("Server Error  !!!","block");</script>'; 
+    $_SESSION['error'] = 'false';
+  }
+  // ELSE PROCEED TO REGISTER
+  ?>
+  <!----------------------------PHP CODES ENDS HERE--------------------------->
 
 </body>  
 </html>

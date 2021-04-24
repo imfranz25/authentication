@@ -22,8 +22,9 @@
 	}?>
 	<!---------------------------PHP CODES ends HERE---------------------->
 
-	<h1>Welcome to My Website</h1>
-
+	<h1>Welcome
+	<?php if (isset($_SESSION['username'])) {echo $_SESSION['username'];}?>
+	</h1>
 	<form method="post">
 		<button name="logout">LOG OUT</button>
 	</form>
