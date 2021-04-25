@@ -5,11 +5,11 @@
 	<!--Title-->
 	<title>Log-in</title>
 	<!--CSS Source-->
-	<link rel="stylesheet" type="text/css" href="../styles/account_style.css">
+	<link rel="stylesheet" type="text/css" href="../styles/style_account.css">
 	<!--JQuery Library-->
 	<script src="../js/jquery.js"></script>
 	<!--JS Source-->
-	<script src="../js/account.js"></script>
+	<script src="../js/account_ac.js"></script>
 	<!--Start PHP Session-->
 	<?php session_start(); ?>
 	
@@ -30,7 +30,7 @@
 			        </div>
 				    <p id="forgot">Forgot Password ? </p>
 				    <button id="submit_login" name="submit_login" value="true" >Log in</button>
-				    <p id="register">Don't have an account ? <a href="register.php">Register Here</a></p>
+				    <p id="register">Don't have an account ? <a name="ha" href="register.php" >Register Here</a></p>
 	        </form>
 	        <!-----------End of Form-------------->   
 	</fieldset>
@@ -54,8 +54,8 @@
 			  	</table>
 			  </div>
 			  <div class="modal-footer">
-			  	<button class="resend" name="resend">Resend Code</button>
 			    <button class="csub" name="submit_otp">Submit</button>
+			    <button class="resend" name="resend">Resend Code</button>
 		 	  </div>
 		  </form>
 		</div>
@@ -78,12 +78,13 @@
 		 	 </div>
 		</div>
 	</div>
-	<!-----------End of Modal Authentication Code-------------->
+	<!-----------End of Modal Message-------------->
 
-	<!-----------Modal Message-------------->
+	<!-----------Modal Message Forgot Password / Update Password-------------->
 	<div id="modal_message_forgot" class="modal_message">
 		<div class="modal_message_content" id="modal_message_content_forgot">
 		  	<div class="modal_message_header">
+		  		<span class="close">&times;</span>
 		    	<h2>*Forgot Password*</h2>
 		  	</div>
 		  	<!-----------Form-------------->
@@ -92,14 +93,13 @@
 					<!-----------Dynamic Content-------------->		
 				</div>
 				<div class="modal_message_footer">
-				  	<button class="resend" id="cancel">Cancel</button>
-				    <button class="csub" name="submit_forgot">Submit</button>
+				    <center><button class="csub" id="submit_forgot" name="submit_forgot" value="true" onclick="validate_pass()">Submit</button><center>
 		 	 	</div>
 		 	</form>
 			<!-----------End of Form-------------->
 		</div>
 	</div>
-	<!-----------End of Modal Authentication Code-------------->
+	<!-----------End of Modal Forgot Password -------------->
 
 	
 
@@ -113,12 +113,12 @@ if (isset($_SESSION['authenticated']) && $_SESSION['authenticated'] == 'true') {
 }
 // IF FAILED (LOGIN-SUCCESS BUT AUTHENTICATION-FAILED) - SHOW FAILED
 else if(isset($_SESSION['authentication_failed']) && $_SESSION['authentication_failed'] == 'true' ){
-	echo '<script>show_message("Authentication Error","block");</script>'; 
+	echo '<script>show_message("Invalid Authentication Code","block");</script>'; 
 	$_SESSION['authentication_failed'] = 'false';
 }
 // IF LOG-IN FAILED - SHOW USER DOES NOT EXIST
 else if (isset($_SESSION['failed']) && $_SESSION['failed'] == 'true') {
-	echo '<script>show_message("User Does Not Exist","block");</script>'; 
+	echo '<script>show_message("Invalid Username and Password","block")</script>';
 	$_SESSION['failed'] = 'false';
 }
 // IF LOG-IN SUCCESS (SHOW AUTHENTICATION CODE)
@@ -133,8 +133,25 @@ else if (isset($_SESSION['modal']) && $_SESSION['modal'] == 'true' ){
 }
 // IF VALID USER & EMAIL (SHOW UPDATE PASSWORD MODAL)
 else if (isset($_SESSION['update_modal']) && $_SESSION['update_modal'] == 'true'){
-	echo '<script>show_forgot("New Password","Confirm Password")</script>'; 
+	echo '<script>show_forgot("Password","Confirm Password");</script>'; 
+	echo '<script>submit_forgot_function("false")</script>';
 	$_SESSION['update_modal'] = 'false';
+}
+// IF INVALID USER & EMAIL (SHOW FAILED  MODAL)
+else if (isset($_SESSION['forgot_failed']) && $_SESSION['forgot_failed'] == 'true'){
+	echo '<script>show_message("User Does Not Exist","block");</script>'; 
+	$_SESSION['forgot_failed'] = 'false';
+}
+// IF UPDATE PASS SUCCESS (SHOW SUCCESS)
+else if (isset($_SESSION['update_success']) && $_SESSION['update_success'] == 'true'){
+	echo '<script>show_message("Update Success","block");</script>'; 
+	echo '<script>submit_forgot_function("true")</script>';
+	$_SESSION['update_success'] = 'false';
+}
+// STATIC DISPLAY USER & PASS
+else if(isset($_SESSION['display_user']) && isset($_SESSION['display_pass'])){
+	echo '<script>display_input_login("'.$_SESSION['display_user'].'","'.$_SESSION['display_pass'].'")</script>';
+	session_destroy();
 }
 //ELSE PROCEED TO LOGIN PAGE HTML
 ?>

@@ -6,11 +6,11 @@
   <!--Title-->
   <title>Register</title>
   <!--CSS Source-->
-  <link rel="stylesheet" type="text/css" href="../styles/account_style.css">
+  <link rel="stylesheet" type="text/css" href="../styles/style_account.css">
   <!--JQuery Library-->
   <script src="../js/jquery.js"></script>
   <!--JS Source-->
-  <script src="../js/account.js"></script>
+  <script src="../js/account_ac.js"></script>
   <!--Start PHP Session-->
   <?php session_start(); ?>
 
@@ -70,7 +70,20 @@
     echo '<script>show_message("Server Error  !!!","block");</script>'; 
     $_SESSION['error'] = 'false';
   }
+  else if (isset($_SESSION['user_exist']) && $_SESSION['user_exist'] == 'true') {
+    echo '<script>show_message("Username is already taken","block");</script>'; 
+    $_SESSION['user_exist'] = 'false';
+  }
+  else if (isset($_SESSION['email_exist']) && $_SESSION['email_exist'] == 'true') {
+    echo '<script>show_message("Email is already taken","block");</script>'; 
+    $_SESSION['email_exist'] = 'false';
+  }
+  else if (isset($_SESSION['display_user_register']) && isset($_SESSION['display_pass_register']) && isset($_SESSION['display_cpass_register']) && isset($_SESSION['display_email_register'])) {
+    echo '<script>display_input_register("'.$_SESSION['display_user_register'].'","'.$_SESSION['display_pass_register'].'","'.$_SESSION['display_cpass_register'].'","'.$_SESSION['display_email_register'].'");</script>';
+    session_destroy();
+  }
   // ELSE PROCEED TO REGISTER
+
   ?>
   <!----------------------------PHP CODES ENDS HERE--------------------------->
 

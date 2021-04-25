@@ -28,18 +28,14 @@
 		}else{return false;}  
 	}//END VERIFY USER PASS
 
-	// VERIFY AUTHENTICATION CODE
-	function verify_code($user,$code){
-
-	}//END VERIFY CODE
-
 	// ISSET SUBMIT LOGIN
 	if(isset($_POST['submit_login'])){
 		if($_POST['submit_login'] == 'true'){
 			// INITIALIZATION
 			$connection = mysql_connect(); // call mysql connect function
-			$user = $_POST['user'];
-			$pass = $_POST['pass'];
+			//get values
+			$user = $_POST['user']; $_SESSION['display_user'] = $user;
+			$pass = $_POST['pass'];	$_SESSION['display_pass'] = $pass;
 			// CONDITION (IF USER PASS EXIST)
 			if (verify_user_pass($connection,$user,$pass)) {
 				$_SESSION['code'] = create_code(); 
@@ -54,6 +50,7 @@
 				$_SESSION['logged-in'] = 'false'; //set false 
 			}	
 		}
+
 		close_connection($connection); //close connection
 		header('location: login.php'); //redirect to login page
 	}//END SUBMIT LOGIN

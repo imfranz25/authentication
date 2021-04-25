@@ -206,6 +206,9 @@
   .csub{
     margin: 20px 0px 20px 100px;
   }
+  #submit_forgot{
+    margin-left: 0;
+  }
   .csub,.resend,.ok{
     text-shadow: 3px 2px black;
     box-shadow: 3px 2px white;

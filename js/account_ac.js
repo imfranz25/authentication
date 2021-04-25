@@ -10,6 +10,7 @@
 	  }
 	  if (event.target == modal_message_forgot) {
 	    modal_message_forgot.style.display = "none";
+	    document.getElementById("submit_forgot").value = "true";
 	    window.location.replace("../index.php");
 	  }
 	}// END
@@ -24,6 +25,43 @@
 		}
 	}); //END
 
+	// DISPLAY EXISTING INPUT (LOGIN)
+	function display_input_login(user,pass){
+		document.getElementById('user').value = user;
+		document.getElementById('pass').value = pass;
+	}// END
+
+	// DISPLAY EXISTING INPUT (REGISTER)
+	function display_input_register(user,pass,cpass,email){
+		document.getElementById('user').value = user;
+		document.getElementById('pass').value = pass;
+		document.getElementById('cpass').value = cpass;
+		document.getElementById('email').value = email;
+	}// END
+
+	//FUNCTION VALIDATE NEW PASSWORD
+	function validate_pass(){
+		//get button value
+		var submit_value = document.getElementById("submit_forgot").value;
+		//validations
+		var special_characters = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+		var upper = new RegExp("[A-Z]");
+		var lower = new RegExp("[a-z]");
+		if (submit_value == 'false') {
+			var pass = document.getElementById('Password_forgot');
+			var cpass = document.getElementById('Confirm Password_forgot');
+			// password validations
+			if (pass.value.length < 8 && pass.value != '') {
+			pass.setCustomValidity("Password must be 8 Characters");
+			}		
+			else if ((!(pass.value.match(special_characters)) | !(pass.value.match(/\d/)) | !(pass.value.match(upper)) | !(pass.value.match(lower)))  &&  pass.value != '') {
+			pass.setCustomValidity("Password must contain atleast one special characters, number, upper, and lower case");
+			}
+			else if (pass.value != cpass.value) {
+			cpass.setCustomValidity("Password and Confirm Password does not match");
+			}
+		}
+	}//END
 
 	//function validate input
 	function validate_input(){
@@ -70,10 +108,16 @@
 		document.getElementById("msg").innerHTML = msg;
 	}//end
 
+	//function show modal forgot
 	function show_forgot(input_1,input_2){
+		var type = 'text'; var submit =document.getElementById('submit_forgot');
+		if (input_1 == 'Password') {type = 'password'; submit.value = 'true';}
 		document.getElementById("modal_message_forgot").style = "display:block";
-		document.getElementById("forgot_dialog_content").innerHTML = "<label class='forgot_pointer' for='"+input_1+"_forgot'>"+input_1+"</label><br><input type='text' name='"+input_1+"_forgot' id='"+input_1+"_forgot' placeholder='Enter your "+input_1+"'><br><label class='forgot_pointer' for='"+input_2+"_forgot'>"+input_2+"</label><br><input type='text' name='"+input_2+"_forgot' id='"+input_2+"_forgot' placeholder='Enter your "+input_2+"'>";
-		
+		document.getElementById("forgot_dialog_content").innerHTML = "<label class='forgot_pointer' for='"+input_1+"_forgot'>"+input_1+"</label><br><input type='"+type+"' name='"+input_1+"_forgot' id='"+input_1+"_forgot' placeholder='Enter your "+input_1+"' required><br><label class='forgot_pointer' for='"+input_2+"_forgot'>"+input_2+"</label><br><input type='"+type+"' name='"+input_2+"_forgot' id='"+input_2+"_forgot' placeholder='Enter your "+input_2+"' required>";
+	}//end
+
+	function submit_forgot_function(status){
+		document.getElementById("submit_forgot").value = status;
 	}
 
 	// JQUERY
@@ -82,9 +126,6 @@
 		$('.close').click(function(e){
 			e.preventDefault();// do not refresh browser
 			show_modal('none'); // display modal none
-		});
-		$('#cancel').click(function(e){
-			e.preventDefault();// do not refresh browser
 			document.getElementById("modal_message_forgot").style = "display:none";
 		});
 
