@@ -81,8 +81,6 @@
 		else if (isset($_SESSION['hide_msg']) && $_SESSION['hide_msg'] == 'true'){
 			header('location: register.php'); // (Problem occured Redirect to Reg)
 		}
-		
-		header('location: register.php'); // (Problem occured Redirect to Reg)
 	}// END ISSET SUBMIT (OK) - MESSAGE DIAGLOG
 
 

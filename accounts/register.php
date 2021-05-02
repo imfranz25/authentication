@@ -6,11 +6,11 @@
   <!--Title-->
   <title>Register</title>
   <!--CSS Source-->
-  <link rel="stylesheet" type="text/css" href="../styles/style_account.css">
+  <link rel="stylesheet" type="text/css" href="../styles/account.css">
   <!--JQuery Library-->
   <script src="../js/jquery.js"></script>
   <!--JS Source-->
-  <script src="../js/account_ac.js"></script>
+  <script src="../js/actions.js"></script>
   <!--Start PHP Session-->
   <?php session_start(); ?>
 
