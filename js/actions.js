@@ -168,15 +168,16 @@
 			show_modal('none'); // display modal none
 			document.getElementById("modal_message_forgot").style = "display:none";
 		});
-
 		$('#forgot').click(function(e){
 			show_forgot('Username','Email');
 		});
-
 		$('#close').click(function(e){
 			e.preventDefault();// do not refresh browser
 			document.getElementById("modal_message_forgot").style = "display:none";
 		});
-
-
+		$('#cancel_backup').click(function(e){
+			e.preventDefault();// do not refresh browser
+			document.getElementById("modal_message_backup").style = "display:none";
+		});
+		
 	});
