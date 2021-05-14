@@ -4,6 +4,13 @@
 	include '../includes/mysql_connection.php'; 
 	include '../accounts/forgot_pass.php';
 
+
+	// ISSET BACK UP LOUT
+	if (isset($_POST['backup'])) {
+		$_SESSION['show_backup'] = 'true';
+		header('location: ../index.php'); // RELOAD INDEX PHP
+	}
+
 	// ISSET CANCEL LOUT
 	if (isset($_POST['cancel_logout'])) {
 		header('location: ../index.php'); // RELOAD INDEX PHP
