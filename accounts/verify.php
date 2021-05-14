@@ -77,7 +77,7 @@
 				// COMPARE CODE INPUT TO LATEST CODE
 				if ($count == 0){
 					if ($row['code_num'] == $code_input) {
-						$_SESSION['authenticated'] = 'true'; 
+						$_SESSION['authenticated'] = 'true';
 						record_event($connection,$_SESSION['username'],'Logged-in');
 					}
 					else{
