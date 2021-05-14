@@ -30,7 +30,7 @@
                 <label class="label_pointer" for="cpass">Confirm Password</label>
                 <input type="password" name="cpass" id="cpass" placeholder="Enter confirm password" required>
                 <label class="label_pointer" for="email">Email</label>
-                <input type="text" name ="email" id="email" placeholder="Enter email" required>
+                <input type="email" name ="email" id="email" placeholder="Enter email" required>
                 <button name="submit_register" id="submit_register" value="true" onclick="validate_input()"  >Register</button>
                 <p id="register">Already have an Account ? <a href="login.php">Log in Here</a></p>
           </form>
