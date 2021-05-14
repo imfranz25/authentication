@@ -5,11 +5,11 @@
 	<!--Title-->
 	<title>My Website | Francis Ong</title>
 	<!--CSS Source-->
-	<link rel="stylesheet" type="text/css" href="styles/account.css">
+	<link rel="stylesheet" type="text/css" href="styles/account.css?v=4">
 	<!--JQuery Library-->
 	<script src="js/jquery.js"></script>
 	<!--JS Source-->
-	<script src="js/actions.js"></script>
+	<script src="js/actions.js?v=2"></script>
 	<!--PHP Require (Authentication)-->
 	<?php require 'accounts/authentication.php'; ?>
 
@@ -24,6 +24,7 @@
 					<h1><?php echo $_SESSION['username'];?></h1>
 					<p align="center">What Can I do For you?</p>
 					<form action="accounts/account.php" method="post">
+						<button name="backup" id="backup">Back Up</button>
 						<button name="change">Change Password</button>
 						<button name="activity_log">Activity Log</button>
 						<button name="logout">Log out</button>
@@ -65,7 +66,7 @@
 			 </div>
 			<div class="modal_message_footer">
 				<form action="accounts/account.php" method="post" id="confirm_msg">
-			  	<center><button class="ok" id="ok" name="ok_login">Ok</button></center>
+			  	<center><button class="ok" name="ok_login">Ok</button></center>
 			  	</form>
 		 	 </div>
 		</div>
@@ -100,7 +101,7 @@
 			</div>
 			<div class="modal_message_footer">
 				<form action="accounts/account.php" method="post">
-			  	<center><button class="ok_log" id="ok" name="ok_login">Back</button></center>
+			  	<center><button class="ok_log"  name="ok_login">Back</button></center>
 			  	</form>
 		 	 </div>
 		</div>
@@ -111,32 +112,66 @@
 	<div id="modal_message_confirm" class="modal_message">
 		<div class="modal_message_content">
 		  	<div class="modal_message_header">
-		    	<h2>*Message Dialog*</h2>
+		    	<h2>*Confirm Dialog*</h2>
 		  	</div>
 			 <div class="modal_message_body">
 			  	<center><label id="msg">Are you sure you want to Log-out ?</label></center>
 			 </div>
 			<div class="modal_message_footer">
 				<form action="accounts/account.php" method="post" >
+					<button class="ok" id="ok_logout" name="ok_logout">Yes</button>
 					<button class="ok" id="cancel_logout" name="cancel_logout">Cancel</button>
-				  	<button class="ok" id="ok_logout" name="ok_logout">Yes</button>
 			  	</form>
 		 	 </div>
 		</div>
 	</div>
 	<!-----------End of Modal Message-------------->
 
+	<!-----------Modal Message Backup-------------->
+	<div id="modal_message_backup" class="modal_message">
+		<div class="modal_message_content">
+		  	<div class="modal_message_header">
+		    	<h2>*Back Up Option*</h2>
+		  	</div>
+			 <div class="modal_message_body">
+			  		<form action="accounts/backup.php" method="post">
+			  			<center>
+			  			<div id="backup_option">
+					  		<input type="radio" id="backup_radio" name="backup" value="backup" required><label for="backup_radio" id="backup_labels">Backup<label>
+					  		<input type="radio" id="download_radio" name="backup" value="download" required><label for="download_radio">Download<label><br>
+					  		<input type="submit" value="MySQL File">
+				  		</div>
+			  		</form>
+			 </div>
+			<div class="modal_message_footer">
+				<form action="accounts/account.php" method="post" >
+					
+			  	</form>
+			  	<center>
+					<button class="ok" id="cancel_backup">Cancel</button>
+				</center>
+		 	 </div>
+		</div>
+	</div>
+	<!-----------End of Modal Message-------------->
 	
-
 <?php
-
+// SHOW BACK UP BUTTON
+if (isset($_SESSION['username']) && $_SESSION['username'] != 'ADMIN'){
+	echo "<script>document.getElementById('backup').style = 'display:none';</script>";
+}
 // IF CHANGE PASS IS CLICKED (SHOW MODAL UPDATE PASS)
 if (isset($_SESSION['show_modal_change_pass']) && $_SESSION['show_modal_change_pass'] == 'true') {
 	echo '<script>show_forgot("Password","Confirm Password");</script>';
 	echo '<script>submit_forgot_function("false")</script>';
 	$_SESSION['show_modal_change_pass'] = 'false';
 }
-// IF SUCESS PASSWORD CHANGE
+// SHOW BACK UP OPTION
+else if (isset($_SESSION['show_backup']) && $_SESSION['show_backup'] == 'true'){
+	echo "<script>document.getElementById('modal_message_backup').style = 'display:block';</script>";
+	$_SESSION['show_backup'] ='false';
+}
+// IF SUCCESS PASSWORD CHANGE
 else if (isset($_SESSION['success']) && $_SESSION['success'] == 'true') {
 	echo '<script>show_message("Update Success","block");</script>';
 	$_SESSION['success'] ='false';
@@ -157,8 +192,21 @@ else if (isset($_SESSION['show_confirm']) && $_SESSION['show_confirm'] == 'true'
 	echo '<script>document.getElementById("modal_message_confirm").style = "display:block";</script>';
 	$_SESSION['show_confirm'] = 'false';
 }
-
-
+// IF SUCCESS BACK UP
+else if (isset($_SESSION['backup_success']) && $_SESSION['backup_success'] == 'true') {
+	echo '<script>show_message("Backup Success","block");</script>';
+	$_SESSION['backup_success'] ='false';
+}
+// IF FAILED BACK UP
+else if (isset($_SESSION['backup_failed']) && $_SESSION['backup_failed'] == 'true') {
+	echo '<script>show_message("Backup Error","block");</script>';
+	$_SESSION['backup_failed'] ='false';
+}
+// IF FAILED DOWNLOAD
+else if (isset($_SESSION['download_failed']) && $_SESSION['download_failed'] == 'true') {
+	echo '<script>show_message("Download Error (File Does Not Exist) Back Up File Needed","block");</script>';
+	$_SESSION['download_failed'] ='false';
+}
 ?>
 
 
