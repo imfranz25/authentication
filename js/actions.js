@@ -135,6 +135,28 @@
 		table.appendChild(table_row);
 	}//END
 
+	//SHOW  USER LIST USING TABLE
+	function show_user(id,user,email,time){
+		//create elements
+		var table = document.getElementById('user_table');
+		var table_row = document.createElement('tr');
+		var data_id = document.createElement('td');
+		var data_user = document.createElement('td');
+		var data_email = document.createElement('td');
+		var data_time = document.createElement('td');
+		data_id.style = "width:30px;";
+		//set attribs
+		data_id.innerHTML = id;
+		data_user.innerHTML = user;
+		data_email.innerHTML = email;
+		data_time.innerHTML = time;
+		table_row.appendChild(data_id);
+		table_row.appendChild(data_user);
+		table_row.appendChild(data_email);
+		table_row.appendChild(data_time);
+		table.appendChild(table_row);
+	}//END
+
 	//function show modal authentication
 	function show_modal(status){
 		// set display status

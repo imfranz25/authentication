@@ -12,7 +12,6 @@
   a:hover{
     color:cyan;
   }
- 
   /*--END--*/
 
   /*---Activity Log---*/
@@ -22,15 +21,23 @@
     padding: 10px;
     background-color: rgb(0,120,120,.8);
   }
-  #log_table,#table_header{
+  #log_table,#table_header,#user_table,#user_header{
     width: 100%;
     color: rgb(255,255,255,.8);
     text-align: center;
   }
-  #log_table tr:hover{
+  #log_table tr:hover,#user_table tr:hover{
     color: cyan;
     cursor: pointer;
     transition: .2s;
+  }
+  #user_header{
+    width: 770px;
+    font-size: 20px;
+    color: cyan;
+  }
+  #create_pdf,#okk{
+    width: 150px;
   }
   #table_header th{
     font-size: 24px;
@@ -407,7 +414,7 @@
     padding-bottom: 30px;
   }
   .body_wrapper button{
-    width: 200px;
+    width: 180px;
     height: 35px;
     cursor: pointer;
     color: white;
@@ -445,3 +452,6 @@
     margin-bottom: 5%;
   }
   /*----End Landing page---*/
+  #user{
+    margin-bottom: 2%;
+  }

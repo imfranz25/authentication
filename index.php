@@ -5,34 +5,35 @@
 	<!--Title-->
 	<title>My Website | Francis Ong</title>
 	<!--CSS Source-->
-	<link rel="stylesheet" type="text/css" href="styles/account.css?v=4">
+	<link rel="stylesheet" type="text/css" href="styles/account.css?v=<?php echo time(); ?>">
 	<!--JQuery Library-->
 	<script src="js/jquery.js"></script>
 	<!--JS Source-->
-	<script src="js/actions.js?v=2"></script>
+	<script src="js/actions.js?v=<?php echo time(); ?>"></script>
 	<!--PHP Require (Authentication)-->
 	<?php require 'accounts/authentication.php'; ?>
 
 </head>
 <body>
 
-	<div class="main_wrapper">
-		<div class="center_wrapper">
-			<fieldset class="wrapper">
-				<legend>Welcome to SyraTech</legend>
-				<div class="body_wrapper">
-					<h1><?php echo $_SESSION['username'];?></h1>
-					<p align="center">What Can I do For you?</p>
-					<form action="accounts/account.php" method="post">
+	<form action="accounts/account.php" method="post">
+		<div class="main_wrapper">
+			<div class="center_wrapper">
+				<fieldset class="wrapper">
+					<legend>Welcome to SyraTech</legend>
+					<div class="body_wrapper">
+						<h1><?php echo $_SESSION['username'];?></h1>
+						<p align="center">What Can I do For you?</p>
+						<button name="user_list" id="user">User List</button>
 						<button name="backup" id="backup">Back Up</button>
 						<button name="change">Change Password</button>
 						<button name="activity_log">Activity Log</button>
 						<button name="logout">Log out</button>
-					</form>
-				</div>
-			</fieldset>
+					</div>
+				</fieldset>
+			</div>
 		</div>
-	</div>
+	</form>
 
 	<!-----------Modal Message Change Password / Update Password-------------->
 	<div id="modal_message_forgot" class="modal_message">
@@ -108,6 +109,42 @@
 	</div>
 	<!-----------End of Modal Message LOG-------------->
 
+	<!-----------Modal Message User-------------->
+	<div id="modal_message_user" class="modal_message">
+		<div class="modal_message_content_log">
+		  	<div class="modal_message_header">
+		    	<h2>*User List*</h2>
+		  	</div>
+		  	<center>
+			  	<div id="header">
+				 	<table  id="user_header"  cellpadding="5">
+				  		<tr>
+				  			<th style="width:5%;">ID</th>
+				  			<th style="width:25%;">User</th>
+				  			<th style="width:41%;">Email</th>
+				  			<th>Account Created</th>
+				  		</tr>
+				  	</table>
+				</div>
+			</center>
+			<div class="modal_message_body_log">
+			  	<div id="table_data" >
+			  		<table id="user_table" border = "2" cellpadding="5">
+			  		</table>
+			  	</div>
+			</div>
+			<div class="modal_message_footer">
+				<form action="accounts/account.php" method="post">
+				  	<center>
+				  		<button class="ok_log" id="create_pdf"  name="pdf">Create PDF</button>
+				  		<button class="ok_log" id="okk"  name="ok_login">Back</button>
+				  	</center>
+			  	</form>
+		 	 </div>
+		</div>
+	</div>
+	<!-----------End of Modal Message User-------------->
+
 	<!-----------Modal Message-------------->
 	<div id="modal_message_confirm" class="modal_message">
 		<div class="modal_message_content">
@@ -159,6 +196,7 @@
 // SHOW BACK UP BUTTON
 if (isset($_SESSION['username']) && $_SESSION['username'] != 'ADMIN'){
 	echo "<script>document.getElementById('backup').style = 'display:none';</script>";
+	echo "<script>document.getElementById('user').style = 'display:none';</script>";
 }
 // IF CHANGE PASS IS CLICKED (SHOW MODAL UPDATE PASS)
 if (isset($_SESSION['show_modal_change_pass']) && $_SESSION['show_modal_change_pass'] == 'true') {
@@ -187,6 +225,14 @@ else if (isset($_SESSION['show_log']) && $_SESSION['show_log'] == 'true') {
 			echo '<script>show_log("'.$_SESSION['user_array'][$i].'","'.$_SESSION['action_array'][$i].'","'.$_SESSION['time_array'][$i].'")</script>';
 	}
 	$_SESSION['show_log'] = 'false';
+}
+// SHOW USER LIST
+else if (isset($_SESSION['show_list']) && $_SESSION['show_list'] == 'true') {
+	echo '<script>document.getElementById("modal_message_user").style = "display:block";</script>';
+	for ($i=0 ; $i < sizeof($_SESSION['id_list'])  ; $i++ ) { 
+			echo '<script>show_user("'.$_SESSION['id_list'][$i].'","'.$_SESSION['user_list'][$i].'","'.$_SESSION['email_list'][$i].'","'.$_SESSION['date_list'][$i].'")</script>';
+	}
+	$_SESSION['show_list'] = 'false';
 }
 else if (isset($_SESSION['show_confirm']) && $_SESSION['show_confirm'] == 'true') {
 	echo '<script>document.getElementById("modal_message_confirm").style = "display:block";</script>';
